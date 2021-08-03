@@ -5,19 +5,15 @@ use std::net::SocketAddr;
 
 #[tokio::main]
 async fn main() {
-    // let app = route("/ping", post(ping));
-    // let addr = SocketAddr::from(([127, 0, 0, 1], 3000));
-    // hyper::Server::bind(&addr)
-    //     .serve(app.into_make_service())
-    //     .await
-    //     .unwrap();
-
-    let beacon_app = route("/beacon", post(get_beacon_data));
-    let beacon_addr = SocketAddr::from(([127, 0, 0, 1], 3000));
-    hyper::Server::bind(&beacon_addr)
-        .serve(beacon_app.into_make_service())
+    let app = 
+    route("/ping", post(ping))
+    .route("/beacon", post(get_beacon_data));
+    let addr = SocketAddr::from(([127, 0, 0, 1], 3000));
+    hyper::Server::bind(&addr)
+        .serve(app.into_make_service())
         .await
         .unwrap();
+        // ここunwrapしないでちゃんとエラー見る
 }
 
 #[derive(Deserialize)]
