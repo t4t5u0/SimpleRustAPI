@@ -5,15 +5,13 @@ use std::net::SocketAddr;
 
 #[tokio::main]
 async fn main() {
-    let app = 
-    route("/ping", post(ping))
-    .route("/beacon", post(get_beacon_data));
+    let app = route("/ping", post(ping)).route("/beacon", post(get_beacon_data));
     let addr = SocketAddr::from(([127, 0, 0, 1], 3000));
     hyper::Server::bind(&addr)
         .serve(app.into_make_service())
         .await
         .unwrap();
-        // ここunwrapしないでちゃんとエラー見る
+    // ここunwrapしないでちゃんとエラー見る
 }
 
 #[derive(Deserialize)]
@@ -36,10 +34,11 @@ struct BeaconData {
 
 #[derive(Deserialize)]
 struct Beacon {
+    uuid: String,
     major: i64,
     minor: i64,
-    rssi: i64,
-    distance: i64,
+    rssi: f64,
+    distance: f64,
 }
 
 #[derive(Deserialize)]
@@ -64,6 +63,7 @@ impl OSType {
 
 #[derive(Serialize)]
 struct BeaconResult {
+    beacon: String,
     response: String,
     hoge: String,
 }
@@ -72,7 +72,14 @@ async fn get_beacon_data(
     extract::Json(get_beacon_data): extract::Json<BeaconData>,
 ) -> response::Json<BeaconResult> {
     let result: String = get_beacon_data.os.check();
+
+    let _uuid = (&get_beacon_data.beacons[0].uuid).to_string();
+    let _major = (&get_beacon_data.beacons[0].major).to_string();
+    let _minor = (&get_beacon_data.beacons[0].major).to_string();
+    let beacon_id = _uuid + ":" + &_major + ":" + &_minor;
+
     response::Json(BeaconResult {
+        beacon: beacon_id,
         response: result,
         hoge: "a".to_string(),
     })
