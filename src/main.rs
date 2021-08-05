@@ -63,7 +63,7 @@ impl OSType {
 
 #[derive(Serialize)]
 struct BeaconResult {
-    beacon: String,
+    beacon: Vec<String>,
     response: String,
     hoge: String,
 }
@@ -73,10 +73,28 @@ async fn get_beacon_data(
 ) -> response::Json<BeaconResult> {
     let result: String = get_beacon_data.os.check();
 
-    let _uuid = (&get_beacon_data.beacons[0].uuid).to_string();
-    let _major = (&get_beacon_data.beacons[0].major).to_string();
-    let _minor = (&get_beacon_data.beacons[0].major).to_string();
-    let beacon_id = _uuid + ":" + &_major + ":" + &_minor;
+    if get_beacon_data.beacons.len() == 0 {
+        return response::Json(BeaconResult {
+            response: result,
+            beacon: vec!["".to_string()],
+            hoge: "a".to_string(),
+        });
+    }
+
+    for item in &get_beacon_data.beacons {
+        let _uuid = (&get_beacon_data.beacons[0].uuid).to_string();
+        let _major = (&get_beacon_data.beacons[0].major).to_string();
+        let _minor = (&get_beacon_data.beacons[0].major).to_string();
+        let beacon_id = _uuid + ":" + &_major + ":" + &_minor;
+    }
+
+    let beacon_id = get_beacon_data
+        .beacons
+        .iter()
+        .map(|item| {
+            (&item.uuid).to_string() + ":" + &item.major.to_string() + ":" + &item.minor.to_string()
+        })
+        .collect::<Vec<String>>();
 
     response::Json(BeaconResult {
         beacon: beacon_id,

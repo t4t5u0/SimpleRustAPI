@@ -1,0 +1,2 @@
+curl -H 'Content-Type: application/json' -d '{"date": "2021-08-05T00:39:27.310Z", "os":"a", "type":"didrange", "beacons": [{"uuid": "50A9D236-F24B-47A8-AB77-B787908020486", "major": 0, "minor": 12345, "rssi":  -51.33012341234, "distance": 0.788812349}]}' http://localhost:3000/beacon
+# curl -H 'Content-Type: application/json' -d './sample.json' http://localhost:3000/beacon
