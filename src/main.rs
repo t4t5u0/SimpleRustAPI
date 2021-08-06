@@ -81,12 +81,12 @@ async fn get_beacon_data(
         });
     }
 
-    for item in &get_beacon_data.beacons {
-        let _uuid = (&get_beacon_data.beacons[0].uuid).to_string();
-        let _major = (&get_beacon_data.beacons[0].major).to_string();
-        let _minor = (&get_beacon_data.beacons[0].major).to_string();
-        let beacon_id = _uuid + ":" + &_major + ":" + &_minor;
-    }
+    // for _item in &get_beacon_data.beacons {
+    //     let _uuid = (_item.uuid).to_string();
+    //     let _major = (_item.major).to_string();
+    //     let _minor = (_item.major).to_string();
+    //     let _beacon_id = _uuid + ":" + &_major + ":" + &_minor;
+    // }
 
     let beacon_id = get_beacon_data
         .beacons
